@@ -1,19 +1,9 @@
 package com.example.android.sunshine.app;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new ForecastFragment())
                     .commit();
         }
     }
@@ -49,48 +39,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            ListView lvForecast = (ListView) rootView.findViewById(R.id.lvForecast);
-
-            List<String> forecastList = new ArrayList<>();
-            forecastList.add("Today Sunny");
-            forecastList.add("Tomorrow Sunny");
-            forecastList.add("Weds Sunny");
-            forecastList.add("Thurs Sunny");
-            forecastList.add("Fri Sunny");
-            forecastList.add("Sat Sunny");
-
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>
-                    (getActivity(),R.layout.tv_list_forecast_layout,R.id.tvForecast,forecastList);
-            lvForecast.setAdapter(arrayAdapter);
-
-            return rootView;
-        }
-
-        class CustomArrayAdapter extends ArrayAdapter<String> {
-            public CustomArrayAdapter(Context context, int resource, int textViewResourceId, List<String> objects) {
-                super(context, resource, textViewResourceId, objects);
-            }
-
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                return super.getView(position, convertView, parent);
-            }
-        }
     }
 
 
