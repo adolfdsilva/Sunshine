@@ -17,7 +17,7 @@ public class Network {
     public String sendHttpRequest(String urlString) {
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
-//        Log.v(Constants.LOG,"Connecting to: " + urlString);
+        Log.v(Constants.LOG,"Connecting to: " + urlString);
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
@@ -33,6 +33,8 @@ public class Network {
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setReadTimeout(30000);
             urlConnection.connect();
 
             // Read the input stream into a String
@@ -57,7 +59,7 @@ public class Network {
                 return null;
             }
             forecastJsonStr = buffer.toString();
-//            Log.v(Constants.LOG,"Forecast JSON Response: "+forecastJsonStr);
+            Log.v(Constants.LOG,"Forecast JSON Response: "+forecastJsonStr);
         } catch (IOException e) {
             Log.e(Constants.LOG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping

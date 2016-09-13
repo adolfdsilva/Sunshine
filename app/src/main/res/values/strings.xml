@@ -6,5 +6,17 @@
     <string name="action_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
     <string name="app_id">9ebdb984c1f92eb6c0f1afc10535d13c</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <string name="pref_title_location">Location</string>
+    <string name="pref_def_location">401201</string>
+    <string name="pref_title_temp_units">Temperature Units</string>
+    <string name="pref_def_temp_units">metric</string>
+    <string name="action_location">Location</string>
+    <string name="action_share">Share</string>
+
 
 </resources>
