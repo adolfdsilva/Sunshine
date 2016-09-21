@@ -47,5 +47,6 @@
 
     <!-- Value in SharedPreferences for imperial temperature unit option [CHAR LIMIT=NONE] -->
     <string name="pref_units_imperial" translatable="false">imperial</string>
+    <string name="api_key">9ebdb984c1f92eb6c0f1afc10535d13c</string>
 
 </resources>
