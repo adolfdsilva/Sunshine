@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
@@ -46,6 +47,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private ListView mListView;
     private int mPosition = ListView.INVALID_POSITION;
     private boolean mUseTodayLayout;
+    TextView tvEmptyText;
 
     private static final String SELECTED_KEY = "selected_position";
 
@@ -136,9 +138,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        tvEmptyText = (TextView) rootView.findViewById(R.id.tvEmptyText);
 
         // Get a reference to the ListView, and attach this adapter to it.
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        mListView.setEmptyView(tvEmptyText);
         mListView.setAdapter(mForecastAdapter);
         // We'll call our MainActivity
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -182,7 +186,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     // since we read the location when we create the loader, all we need to do is restart things
-    void onLocationChanged( ) {
+    void onLocationChanged() {
         updateWeather();
         getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
     }
@@ -195,9 +199,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         // Using the URI scheme for showing a location found on a map.  This super-handy
         // intent can is detailed in the "Common Intents" page of Android's developer site:
         // http://developer.android.com/guide/components/intents-common.html#Maps
-        if ( null != mForecastAdapter ) {
+        if (null != mForecastAdapter) {
             Cursor c = mForecastAdapter.getCursor();
-            if ( null != c ) {
+            if (null != c) {
                 c.moveToPosition(0);
                 String posLat = c.getString(COL_COORD_LAT);
                 String posLong = c.getString(COL_COORD_LONG);
@@ -252,11 +256,17 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mForecastAdapter.swapCursor(data);
-        if (mPosition != ListView.INVALID_POSITION) {
-            // If we don't need to restart the loader, and there's a desired position to restore
-            // to, do so now.
-            mListView.smoothScrollToPosition(mPosition);
+        if (data != null && data.moveToFirst()) {
+            mForecastAdapter.swapCursor(data);
+            if (mPosition != ListView.INVALID_POSITION) {
+                // If we don't need to restart the loader, and there's a desired position to restore
+                // to, do so now.
+                mListView.smoothScrollToPosition(mPosition);
+            }
+        } else {
+            if (!Utility.checkNetwork(getActivity())) {
+                tvEmptyText.setText(getString(R.string.no_weather_information_available) + "\n" + getString(R.string.no_internet));
+            }
         }
     }
 

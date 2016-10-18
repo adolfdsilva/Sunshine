@@ -17,6 +17,7 @@ package com.example.android.sunshine.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
 
@@ -245,5 +246,10 @@ public class Utility {
             return R.drawable.art_clouds;
         }
         return -1;
+    }
+
+    public static boolean checkNetwork(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo() !=null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 }

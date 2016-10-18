@@ -93,5 +93,8 @@
 
     <!-- Strings related to Notification preference -->
     <string name="pref_last_notification">last_notification</string>
+    <string name="api_key">9ebdb984c1f92eb6c0f1afc10535d13c</string>
+    <string name="no_weather_information_available">No Weather Information Available</string>
+    <string name="no_internet">No Internet</string>
 
 </resources>
