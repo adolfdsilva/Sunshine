@@ -16,9 +16,11 @@
 package com.example.android.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -40,7 +42,7 @@ import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 /**
  * Encapsulates fetching the forecast and displaying it as a {@link ListView} layout.
  */
-public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String LOG_TAG = ForecastFragment.class.getSimpleName();
     private ForecastAdapter mForecastAdapter;
 
@@ -52,6 +54,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private static final String SELECTED_KEY = "selected_position";
 
     private static final int FORECAST_LOADER = 0;
+    SharedPreferences preferences;
     // For the forecast view we're showing only a small subset of the stored data.
     // Specify the columns we need.
     private static final String[] FORECAST_COLUMNS = {
@@ -84,6 +87,27 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if (!s.equalsIgnoreCase(SunshineSyncAdapter.STATUS))
+            return;
+
+        int LOCATION_STATUS = sharedPreferences.getInt(s, SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
+        switch (LOCATION_STATUS) {
+            case SunshineSyncAdapter.LOCATION_STATUS_SERVER_DOWN:
+                tvEmptyText.setText(getString(R.string.empty_forecast_list_server_down));
+                break;
+            case SunshineSyncAdapter.LOCATION_STATUS_INVALID:
+                tvEmptyText.setText(getString(R.string.empty_forecast_list_server_error));
+                break;
+            case  SunshineSyncAdapter.LOCATION_STATUS_LOCATION_INVALID:
+                tvEmptyText.setText(getString(R.string.empty_forecast_list_invalid_location));
+                break;
+            default:
+                tvEmptyText.setText("");
+        }
+    }
+
     /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
@@ -104,6 +128,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
         setHasOptionsMenu(true);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
     @Override
@@ -280,5 +305,17 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         if (mForecastAdapter != null) {
             mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        preferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        preferences.registerOnSharedPreferenceChangeListener(this);
     }
 }

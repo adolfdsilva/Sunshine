@@ -96,5 +96,21 @@
     <string name="api_key">9ebdb984c1f92eb6c0f1afc10535d13c</string>
     <string name="no_weather_information_available">No Weather Information Available</string>
     <string name="no_internet">No Internet</string>
+    <string name="empty_forecast_list_server_down">No weather information available. The server is not returning data.</string>
+    <string name="empty_forecast_list_server_error">" No weather information available. The server is not returning valid data.Please check for an updated version of Sunshine."</string>
+    <string name="pref_location_unkown">UNKNOWN</string>
+    <string name="empty_forecast_list_invalid_location">No weather information available. The location in settings is not recognized by the weather server.</string>
+    <string name="pref_location_error_description">Invalid Location (<xliff:g id="location_setting">%1$s</xliff:g>)"</string>
+    <string name="pref_location_unknown_description">Validating Location... (<xliff:g id="location_setting">%1$s</xliff:g>)"</string>
+
+    <string name="format_art_url" translatable="false">https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-xxhdpi/art_<xliff:g id="description">%s</xliff:g>.png</string>
+    <string name="format_art_url_color" translatable="false">https://github.com/udacity/sunshine_icons/tree/master/Archive/Colored/art_<xliff:g id="description">%s</xliff:g>.png</string>
+    <string name="format_art_url_mono" translatable="false">https://github.com/udacity/sunshine_icons/tree/master/Archive/Mono/art_<xliff:g id="description">%s</xliff:g>.png</string>
+
+    <string name="pref_art_url">Default</string>
+    <string name="pref_art_url_color">Color</string>
+    <string name="pref_art_url_mono">Mono</string>
+    <string name="pref_icon_key">pref_icon_pack</string>
+    <string name="pref_icon_label">Icon Pack</string>
 
 </resources>

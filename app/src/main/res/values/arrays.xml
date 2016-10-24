@@ -10,4 +10,18 @@
         <item>@string/pref_units_metric</item>
         <item>@string/pref_units_imperial</item>
     </string-array>
+
+    <string-array name="pref_icon_options">
+        <item>@string/pref_art_url</item>
+        <item>@string/pref_art_url_color</item>
+        <item>@string/pref_art_url_mono</item>
+    </string-array>
+
+    <string-array name="pref_icon_values">
+        <item>@string/format_art_url</item>
+        <item>@string/format_art_url_color</item>
+        <item>@string/format_art_url_mono</item>
+    </string-array>
+
+
 </resources>
