@@ -28,6 +28,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Utility {
+    public static int PLAY_SERVICES_RESOLUTION_REQUEST = 1;
+
     public static String getPreferredLocation(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(R.string.pref_location_key),
@@ -238,4 +240,24 @@ public class Utility {
                 SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN)
                 .apply();
     }
+
+//    /**
+//     * Check the device to make sure it has the Google Play Services APK. If
+//     * it doesn't, display a dialog that allows users to download the APK from
+//     * the Google Play Store or enable it in the device's system settings.
+//     */
+//    public static boolean checkPlayServices(Activity activity) {
+//        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+//        int resultCode = apiAvailability.isGooglePlayServicesAvailable(activity);
+//        if (resultCode != ConnectionResult.SUCCESS) {
+//            if (apiAvailability.isUserResolvableError(resultCode)) {
+//                apiAvailability.getErrorDialog(activity, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+//                        .show();
+//            } else {
+//                Log.i(TAG, "This device is not supported.");
+//            }
+//            return false;
+//        }
+//        return true;
+//    }
 }

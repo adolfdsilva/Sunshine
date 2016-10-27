@@ -16,9 +16,13 @@
 package com.example.android.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -38,6 +42,18 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         mLocation = Utility.getPreferredLocation(this);
 
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Log.d(LOG_TAG, "token: " + preferences.getString(MyInstanceIDListenerService.TOKEN, "Not found"));
+        if (!preferences.getBoolean(MyInstanceIDListenerService.REGISTERED_GCM_TOKEN, false)) {
+            startService(new Intent(this, MyInstanceIDListenerService.class));
+        }
+
+
         if (findViewById(R.id.weather_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
             // (res/layout-sw600dp). If this view is present, then the activity should be
@@ -56,7 +72,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             getSupportActionBar().setElevation(0f);
         }
 
-        ForecastFragment forecastFragment =  ((ForecastFragment)getSupportFragmentManager()
+        ForecastFragment forecastFragment = ((ForecastFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_forecast));
         forecastFragment.setUseTodayLayout(!mTwoPane);
 
@@ -89,15 +105,15 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     @Override
     protected void onResume() {
         super.onResume();
-        String location = Utility.getPreferredLocation( this );
+        String location = Utility.getPreferredLocation(this);
         // update the location in our second pane using the fragment manager
-            if (location != null && !location.equals(mLocation)) {
-            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
-            if ( null != ff ) {
+        if (location != null && !location.equals(mLocation)) {
+            ForecastFragment ff = (ForecastFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
+            if (null != ff) {
                 ff.onLocationChanged();
             }
-            DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
-            if ( null != df ) {
+            DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            if (null != df) {
                 df.onLocationChanged(location);
             }
             mLocation = location;

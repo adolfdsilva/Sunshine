@@ -2,8 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.sunshine.app">
 
+    <permission
+        android:name="com.example.android.sunshine.app.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
     <!-- This permission is necessary in order for Sunshine to perform network access. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.example.android.sunshine.app.permission.C2D_MESSAGE" />
 
     <!-- Permissions required by the sync adapter -->
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
@@ -72,6 +79,29 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
+
+        <service
+            android:name=".MyGCMService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".MyInstanceIDListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_logo" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimaryLight" />
     </application>
 
 </manifest>
